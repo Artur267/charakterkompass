@@ -1,10 +1,14 @@
-name: Deploy to Cloud Run
+name: Deploy to Cloud Run (DISABLED - Cloud Build handles deployment)
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+# Deaktiviert: Cloud Build deployed direkt aus GitHub
+# GitHub Actions nicht nötig für diese Setup
+#on:
+#  push:
+#    branches:
+#      - main
+#  workflow_dispatch:
+
+on: workflow_dispatch  # Nur manuell triggerbar falls nötig
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
