@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Charakter-Kompass</title>
+    <meta
+      name="description"
+      content="Ein spielerischer DISG-/Temperament-Selbsttest als Single-Page-Webapp."
+    >
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" type="module" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <a class="skip-link" href="#testbereich">Zum Test springen</a>
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span>D</span>
+            <span>I</span>
+            <span>S</span>
+            <span>G</span>
+          </div>
+          <div>
+            <p class="eyebrow">Reflexions- und Selbsterkenntnis-Spiel</p>
+            <h1>Charakter-Kompass</h1>
+          </div>
+        </div>
+        <p class="save-status" id="saveStatus" aria-live="polite">Bereit</p>
+      </header>
+
+      <main id="testbereich">
+        <section class="hero-strip" aria-label="Spielprinzip">
+          <div>
+            <p class="section-kicker">So funktioniert es</p>
+            <p>
+              Vergib pro Block jede Zahl von <strong>1</strong> bis <strong>4</strong> genau einmal.
+              4 bedeutet: trifft am stärksten auf mich zu.
+            </p>
+          </div>
+          <div class="name-panel">
+            <label for="userName">Dein Name</label>
+            <input
+              id="userName"
+              name="userName"
+              type="text"
+              autocomplete="name"
+              maxlength="80"
+              placeholder="optional"
+            >
+          </div>
+          <div class="mini-scale" aria-hidden="true">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+          </div>
+        </section>
+
+        <section class="game-layout" id="quizView" aria-labelledby="blockHeading">
+          <div class="quiz-card">
+            <div class="quiz-head">
+              <div>
+                <p class="section-kicker" id="progressText">Block 1 von 10</p>
+                <h2 id="blockHeading">Eigenschaften einordnen</h2>
+              </div>
+              <div
+                class="progress-meter"
+                role="progressbar"
+                aria-label="Fortschritt"
+                aria-valuemin="0"
+                aria-valuemax="10"
+                aria-valuenow="1"
+                id="progressMeter"
+              >
+                <span id="progressFill"></span>
+              </div>
+            </div>
+
+            <form class="trait-form" id="traitForm" novalidate></form>
+
+            <p class="validation-message" id="validationMessage" role="alert" hidden></p>
+            <p class="round-feedback" id="roundFeedback" role="status" aria-live="polite"></p>
+
+            <div class="action-row" aria-label="Navigation">
+              <button class="button secondary" type="button" id="backButton">Zurück</button>
+              <button class="button quiet" type="button" id="resetButton">Daten löschen / Neu starten</button>
+              <button class="button primary" type="button" id="nextButton">Weiter</button>
+            </div>
+          </div>
+
+          <aside class="side-panel" aria-label="Übersicht">
+            <div>
+              <p class="section-kicker">Runden</p>
+              <div class="block-dots" id="blockDots"></div>
+            </div>
+            <div class="rule-box">
+              <h2>Werte</h2>
+              <dl>
+                <div>
+                  <dt>4</dt>
+                  <dd>trifft am stärksten zu</dd>
+                </div>
+                <div>
+                  <dt>3</dt>
+                  <dd>trifft eher zu</dd>
+                </div>
+                <div>
+                  <dt>2</dt>
+                  <dd>trifft etwas zu</dd>
+                </div>
+                <div>
+                  <dt>1</dt>
+                  <dd>trifft am wenigsten zu</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="axis-note">
+              <h2>Achsen</h2>
+              <p>oben: offensiv / extrovertiert</p>
+              <p>unten: defensiv / introvertiert</p>
+              <p>links: aufgabenorientiert</p>
+              <p>rechts: menschenorientiert</p>
+            </div>
+          </aside>
+        </section>
+
+        <section class="result-view" id="resultView" aria-labelledby="resultHeading" hidden>
+          <div class="result-hero">
+            <div>
+              <p class="section-kicker">Auswertung</p>
+              <h2 id="resultHeading">Dein Charakter-Profil</h2>
+              <p class="result-person" id="resultPerson"></p>
+              <p class="result-note">
+                Dieses Ergebnis ist keine medizinische oder psychologische Diagnose, sondern ein
+                Reflexionsmodell für Gespräch, Selbstbeobachtung und Entwicklung.
+              </p>
+            </div>
+            <div class="profile-badge" id="profileBadge">Haupttyp: D - Choleriker</div>
+          </div>
+
+          <div class="result-grid">
+            <article class="score-panel" aria-labelledby="scoreHeading">
+              <h3 id="scoreHeading">Punktzahlen</h3>
+              <div class="score-total" id="scoreTotal">Gesamtsumme: 100</div>
+              <div class="bar-chart" id="scoreBars"></div>
+            </article>
+
+            <article class="chart-panel" aria-labelledby="chartHeading">
+              <h3 id="chartHeading">Quadranten-Profil</h3>
+              <svg
+                class="quadrant-chart"
+                id="quadrantChart"
+                viewBox="0 0 420 420"
+                role="img"
+                aria-labelledby="chartTitle chartDesc"
+              >
+                <title id="chartTitle">Koordinatendiagramm der vier Typen</title>
+                <desc id="chartDesc">
+                  Die vier Punktwerte werden in den passenden Quadranten platziert und zu einem
+                  Profil verbunden.
+                </desc>
+              </svg>
+            </article>
+          </div>
+
+          <article class="interpretation-panel" aria-labelledby="interpretationHeading">
+            <div class="type-summary">
+              <p class="section-kicker">Haupttyp</p>
+              <h3 id="interpretationHeading"></h3>
+              <p id="mainDescription"></p>
+              <p class="secondary-type" id="secondaryType"></p>
+            </div>
+
+            <div class="profile-insights" aria-label="Einordnung und Wirkung">
+              <section aria-labelledby="profileAssessmentHeading">
+                <h4 id="profileAssessmentHeading">Dein Profil</h4>
+                <p id="profileAssessment"></p>
+              </section>
+              <section aria-labelledby="selfEffectHeading">
+                <h4 id="selfEffectHeading">Deine Eigenwirkung</h4>
+                <p id="selfEffect"></p>
+              </section>
+              <section aria-labelledby="externalEffectHeading">
+                <h4 id="externalEffectHeading">Wie andere dich interpretieren könnten</h4>
+                <p id="externalEffect"></p>
+              </section>
+            </div>
+
+            <div class="insight-grid">
+              <section aria-labelledby="strengthHeading">
+                <h4 id="strengthHeading">Stärken</h4>
+                <ul id="strengthList"></ul>
+              </section>
+              <section aria-labelledby="weaknessHeading">
+                <h4 id="weaknessHeading">Mögliche Schwächen</h4>
+                <ul id="weaknessList"></ul>
+              </section>
+              <section aria-labelledby="tipsHeading">
+                <h4 id="tipsHeading">Tipps zur Selbstentwicklung</h4>
+                <ul id="tipsList"></ul>
+              </section>
+            </div>
+          </article>
+
+          <div class="action-row result-actions" aria-label="Ergebnisaktionen">
+            <button class="button secondary" type="button" id="editAnswersButton">Antworten ansehen</button>
+            <button class="button quiet" type="button" id="copyResultButton">Ergebnis als Text kopieren</button>
+            <button class="button secondary" type="button" id="downloadPdfButton">PDF herunterladen</button>
+            <button class="button primary" type="button" id="restartResultButton">Daten löschen / Neu starten</button>
+          </div>
+
+          <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
+        </section>
+      </main>
+
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </div>
+  </body>
+</html>
